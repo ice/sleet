@@ -1,0 +1,106 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: Sleet
+scopeName: text.html.sleet
+fileTypes: [sleet]
+uuid: a934fe48-2452-4ea2-a46c-19135219037e
+
+patterns:
+- comment: Comment line
+  name: comment.line.sleet
+  begin: '{#'
+  end: '#}'
+
+- comment: Echo line
+  name: variable.other.sleet
+  begin: '{{'
+  end: '}}'
+  patterns:
+  - match: \b(_t|partial|load|dump|version|get_title|get_title_separator|get_meta|text_field|password_field|hidden_field|file_field|submit_button|button|check_field|radio_field|form|text_area|image|img|link_to|a|link|script|style|meta|select|tag_html|end_tag|friendly_title|get_doc_type)\b\(
+    comment: Tag functions
+    captures:
+      '1': {name: support.function.tag.sleet}
+
+  - include: '#filters'
+  - include: '#constants'
+  - include: '#operators'
+  - include: '#strings'
+  - include: '#variables'
+
+- comment: Control line
+  name: entity.other.sleet
+  begin: '{%'
+  end: '%}'
+  patterns:
+  - match: \b((?:end)?(?:if|for|while|switch|foreach)|break|else|default|case|do|as|use|set|var|as)\b
+    name: keyword.control.sleet
+    comment: PHP controls
+
+  - include: '#filters'
+  - include: '#constants'
+  - include: '#operators'
+  - include: '#strings'
+  - include: '#variables'
+
+- comment: Slet extends HTML
+  include: 'text.html.basic'
+
+repository:
+  variables:
+    patterns:
+    - match: '[A-Za-z_][A-Za-z_0-9]*'
+      name: variable.other.operator.sleet
+
+  filters:
+    patterns:
+    - match: \|(isset|capitalize|camelize|uncamelize|human|lower|upper|alnum|alpha|email|float|int|string|strip_repeats|e|escape|strip_special|unescape|unstrip_special)\b
+      name: support.function.filter.sleet
+      comment: Filters
+
+  constants:
+    patterns:
+    - match: (?i)(?<=[\s\[\(\{:,])(?:true|false|null)(?=[\s\)\]\}\,])
+      name: constant.language.sleet
+
+    - match: (?<=[\s\[\(\{:,]|\.\.|\*\*)[0-9]+(?:\.[0-9]+)?(?=[\s\)\]\}\,]|\.\.|\*\*)
+      name: constant.numeric.sleet
+
+  operators:
+    patterns:
+    - match: (?<=\s)(\+|-|\*|/|%|//)(?=\s)
+      captures:
+        '1': {name: keyword.operator.arithmetic.sleet}
+
+    - match: (?<=\s)(=|~)(?=\s)
+      captures:
+        '1': {name: keyword.operator.assignment.sleet}
+
+    - match: (?<=\s)(&&|\|\||\^)(?=\s)
+      captures:
+        '1': {name: keyword.operator.bitwise.sleet}
+
+    - match: (?<=\s)((?:!|=)=|<=?|>=?|i(?:s|n))(?=\s)
+      captures:
+        '1': {name: keyword.operator.comparison.sleet}
+
+    - match: (?<=\s)(not|or|and|\?|:)(?=\s)
+      captures:
+        '1': {name: keyword.operator.logical.sleet}
+
+  strings:
+    patterns:
+    - name: string.quoted.single.sleet
+      begin: "'"
+      beginCaptures:
+        '0': {name: punctuation.definition.string.begin.sleet}
+      end: "'"
+      endCaptures:
+        '0': {name: punctuation.definition.string.end.sleet}
+
+    - name: string.quoted.double.sleet
+      begin: '"'
+      beginCaptures:
+        '0': {name: punctuation.definition.string.begin.sleet}
+      end: '"'
+      endCaptures:
+        '0': {name: punctuation.definition.string.end.sleet}

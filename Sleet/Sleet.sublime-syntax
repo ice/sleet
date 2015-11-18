@@ -1,0 +1,89 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: Sleet
+file_extensions:
+  - sleet
+scope: text.html.sleet
+uuid: a934fe48-2452-4ea2-a46c-19135219037e
+contexts:
+  main:
+    - match: ""
+      comment: Slet extends HTML
+      push: "Packages/HTML/HTML.sublime-syntax"
+      with_prototype:
+        - match: "{#"
+          comment: Comment line
+          push:
+            - meta_scope: comment.line.sleet
+            - match: "#}"
+              pop: true
+        - match: "{{"
+          comment: Echo line
+          push:
+            - meta_scope: variable.other.sleet
+            - match: "}}"
+              pop: true
+            - match: \b(_t|content|partial|load|dump|version|get_title|get_title_separator|get_meta|text_field|password_field|hidden_field|file_field|submit_button|button|check_field|radio_field|form|text_area|image|img|link_to|a|link|script|style|meta|select|tag_html|end_tag|friendly_title|get_doc_type)\b\(
+              comment: Tag functions
+              captures:
+                1: support.function.tag.sleet
+            - include: filters
+            - include: constants
+            - include: operators
+            - include: strings
+            - include: variables
+        - match: "{%"
+          comment: Control line
+          push:
+            - meta_scope: entity.other.sleet
+            - match: "%}"
+              pop: true
+            - match: \b((?:end)?(?:if|for|while|switch|foreach)|break|else|default|case|do|as|use|set|var|as|new)\b
+              comment: PHP controls
+              scope: keyword.control.sleet
+            - include: filters
+            - include: constants
+            - include: operators
+            - include: strings
+            - include: variables
+
+  constants:
+    - match: '(?i)(?<=[\s\[\(\{:,])(?:true|false|null)(?=[\s\)\]\}\,])'
+      scope: constant.language.sleet
+    - match: '(?<=[\s\[\(\{:,]|\.\.|\*\*)[0-9]+(?:\.[0-9]+)?(?=[\s\)\]\}\,]|\.\.|\*\*)'
+      scope: constant.numeric.sleet
+  filters:
+    - match: \|(isset|capitalize|camelize|uncamelize|human|lower|upper|alnum|alpha|email|float|int|string|strip_repeats|e|escape|strip_special|unescape|unstrip_special)\b
+      comment: Filters
+      scope: support.function.filter.sleet
+  operators:
+    - match: (?<=\s)(\+|-|\*|/|%|//)(?=\s)
+      captures:
+        1: keyword.operator.arithmetic.sleet
+    - match: (?<=\s)(=|~)(?=\s)
+      captures:
+        1: keyword.operator.assignment.sleet
+    - match: (?<=\s)(&&|\|\||\^)(?=\s)
+      captures:
+        1: keyword.operator.bitwise.sleet
+    - match: (?<=\s)((?:!|=)=|<=?|>=?|i(?:s|n))(?=\s)
+      captures:
+        1: keyword.operator.comparison.sleet
+    - match: (?<=\s)(not|or|and|\?|:)(?=\s)
+      captures:
+        1: keyword.operator.logical.sleet
+  strings:
+    - match: "'"
+      push:
+      - meta_scope: string.quoted.single.sleet
+      - match: "'"
+        pop: true
+    - match: '"'
+      push:
+      - meta_scope: string.quoted.double.sleet
+      - match: '"'
+        pop: true
+  variables:
+    - match: "[A-Za-z_][A-Za-z_0-9]*"
+      scope: variable.other.operator.sleet
