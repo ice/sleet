@@ -18,7 +18,7 @@
 			<key>end</key>
 			<string>#}</string>
 			<key>name</key>
-			<string>comment.line.sleet</string>
+			<string>comment.block.sleet</string>
 		</dict>
 		<dict>
 			<key>begin</key>
@@ -39,11 +39,16 @@
 							<key>name</key>
 							<string>support.function.tag.sleet</string>
 						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>entity.name.function.sleet</string>
+						</dict>
 					</dict>
 					<key>comment</key>
 					<string>Tag functions</string>
 					<key>match</key>
-					<string>\b(_t|partial|load|dump|version|get_title|get_title_separator|get_meta|text_field|password_field|hidden_field|file_field|submit_button|button|check_field|radio_field|form|text_area|image|img|link_to|a|link|script|style|meta|select|tag_html|end_tag|friendly_title|get_doc_type)\b\(</string>
+					<string>\b(_t|content|partial|load|dump|version|get_title|get_title_separator|get_meta|text_field|password_field|hidden_field|file_field|submit_button|button|check_field|radio_field|form|text_area|image|img|link_to|a|link|script|style|meta|select|tag_html|end_tag|friendly_title|get_doc_type|(\w+))\b\(</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -82,7 +87,7 @@
 					<key>comment</key>
 					<string>PHP controls</string>
 					<key>match</key>
-					<string>\b((?:end)?(?:if|for|while|switch|foreach)|break|else|default|case|do|as|use|set|var|as)\b</string>
+					<string>\b((?:end)?(?:if|for|while|switch|foreach)|break|else|default|case|do|as|use|set|var|as|new)\b</string>
 					<key>name</key>
 					<string>keyword.control.sleet</string>
 				</dict>
